@@ -44,6 +44,8 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |
+        wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -o /usr/local/bin/bosh
+        chmod +x /usr/local/bin/bosh
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
         echo "Generating install values..."
         ./hack/generate-values.sh "${DNS_DOMAIN}" > cf-install-values.yml
