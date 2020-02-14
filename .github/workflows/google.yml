@@ -45,7 +45,7 @@ jobs:
     - name: Deploy
       run: |
         mkdir -p "${HOME}/bin"
-        wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -o "${HOME}/bin/bosh"
+        wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -O "${HOME}/bin/bosh"
         chmod +x "${HOME}/bin/bosh"
         export PATH="${HOME}/bin:$PATH"  
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
