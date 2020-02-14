@@ -51,6 +51,7 @@ jobs:
         chmod +x "${HOME}/bin/bosh"
         export PATH="${HOME}/bin:$PATH"  
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+        kapp delete -a cf --yes
         echo "Generating install values..."
         ./hack/generate-values.sh "${DNS_DOMAIN}" > cf-install-values.yml
         echo "Installing CF..."

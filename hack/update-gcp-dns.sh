@@ -31,9 +31,40 @@ gcloud dns record-sets transaction add --name "*.${DNS_DOMAIN}" --type=A --zone=
 echo "Executing transaction..."
 gcloud dns record-sets transaction execute --zone="${DNS_ZONE_NAME}" --verbosity=debug
 
-resolved_ip=''
-while [ "$resolved_ip" != "$external_static_ip" ]; do
-  echo "Waiting for DNS to propagate..."
-  sleep 5
+function with_backoff {
+  local max_attempts=${ATTEMPTS-5}
+  local timeout=${TIMEOUT-1}
+  local attempt=0
+  local exitCode=0
+
+  while [[ $attempt < $max_attempts ]]
+  do
+    "$@"
+    exitCode=$?
+
+    if [[ $exitCode == 0 ]]
+    then
+      break
+    fi
+
+    echo "Failure! Retrying in $timeout.." 1>&2
+    sleep $timeout
+    attempt=$(( attempt + 1 ))
+    timeout=$(( timeout * 2 ))
+  done
+
+  if [[ $exitCode != 0 ]]
+  then
+    echo "You've failed me for the last time! ($@)" 1>&2
+  fi
+
+  return $exitCode
+}
+
+function check_resolved_ip {
+  resolved_ip=''
   resolved_ip=$(nslookup "*.$DNS_DOMAIN" | grep Address | grep -v ':53' | cut -d ' ' -f2)
-done
+  return [ "$resolved_ip" != "$external_static_ip" ]
+}
+
+with_backoff check_resolved_ip
