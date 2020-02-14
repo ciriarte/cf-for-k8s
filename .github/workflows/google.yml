@@ -44,7 +44,7 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |
-        wget -O- https://k14s.io/install.sh | bash
+        wget -O- https://k14s.io/install.sh | sudo bash
         mkdir -p "${HOME}/bin"
         wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -O "${HOME}/bin/bosh"
         chmod +x "${HOME}/bin/bosh"
