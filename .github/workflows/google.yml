@@ -63,6 +63,7 @@ jobs:
       run: |
         go get github.com/onsi/ginkgo/ginkgo
         go get github.com/onsi/gomega/...
+        export PATH="${GOPATH}/bin:$PATH"
         export SMOKE_TEST_API_ENDPOINT="https://api.${DNS_DOMAIN}"
         export SMOKE_TEST_APPS_DOMAIN="${DNS_DOMAIN}"
         export SMOKE_TEST_USERNAME=admin
