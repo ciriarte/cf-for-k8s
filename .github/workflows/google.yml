@@ -60,6 +60,9 @@ jobs:
 
     - name: Smoke Tests
       run: |
+        wget -O "cf-tar" "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=6.49.0"
+        sudo tar xzvf cf-tar -C /usr/local/bin
+        sudo chmod +x /usr/local/bin/cf
         go get github.com/onsi/ginkgo/ginkgo
         go get github.com/onsi/gomega/...        
         export PATH="$(go env GOPATH)/bin:$PATH"
