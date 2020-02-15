@@ -53,7 +53,6 @@ jobs:
         kapp delete -a cf --yes
         echo "Generating install values..."
         ./hack/generate-values.sh "${DNS_DOMAIN}" > cf-install-values.yml
-        export SMOKE_TEST_PASSWORD=$(export bosh interpolate --path /cf_admin_password cf-install-values.yml)
         echo "Installing CF..."
         ./bin/install-cf.sh cf-install-values.yml
         echo "Configuring DNS..."
@@ -67,4 +66,5 @@ jobs:
         export SMOKE_TEST_API_ENDPOINT="https://api.${DNS_DOMAIN}"
         export SMOKE_TEST_APPS_DOMAIN="${DNS_DOMAIN}"
         export SMOKE_TEST_USERNAME=admin
+        export SMOKE_TEST_PASSWORD=$(bosh interpolate --path /cf_admin_password cf-install-values.yml)
         ./hack/run-smoke-tests.sh
