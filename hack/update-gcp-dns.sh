@@ -64,7 +64,7 @@ function with_backoff {
 function check_resolved_ip {
   resolved_ip=''
   resolved_ip=$(nslookup "*.$DNS_DOMAIN" | grep Address | grep -v ':53' | cut -d ' ' -f2)
-  return [ "$resolved_ip" != "$external_static_ip" ]
+  return test [ "$resolved_ip" != "$external_static_ip" ]
 }
 
 with_backoff check_resolved_ip
