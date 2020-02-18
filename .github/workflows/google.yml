@@ -46,8 +46,8 @@ jobs:
       run: |
         wget -O- https://k14s.io/install.sh | sudo bash
         mkdir -p "${HOME}/bin"
-        wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -O "bosh"
-        chmod +x "bosh"
+        wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -O bosh
+        chmod +x bosh
         sudo mv bosh /usr/local/bin/bosh 
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
         kapp delete -a cf --yes
