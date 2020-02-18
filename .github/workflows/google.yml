@@ -46,9 +46,9 @@ jobs:
       run: |
         wget -O- https://k14s.io/install.sh | sudo bash
         mkdir -p "${HOME}/bin"
-        wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -O "${HOME}/bin/bosh"
-        chmod +x "${HOME}/bin/bosh"
-        export PATH="${HOME}/bin:$PATH"  
+        wget https://github.com/cloudfoundry/bosh-cli/releases/download/v6.2.1/bosh-cli-6.2.1-linux-amd64 -O "bosh"
+        chmod +x "bosh"
+        sudo mv bosh /usr/local/bin/bosh 
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
         kapp delete -a cf --yes
         echo "Generating install values..."
@@ -70,5 +70,4 @@ jobs:
         export SMOKE_TEST_APPS_DOMAIN="${DNS_DOMAIN}"
         export SMOKE_TEST_USERNAME=admin
         export SMOKE_TEST_PASSWORD="$(bosh interpolate --path /cf_admin_password cf-install-values.yml)"
-        echo "$SMOKE_TEST_PASSWORD"
         ./hack/run-smoke-tests.sh
